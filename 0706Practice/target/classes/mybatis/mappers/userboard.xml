@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 1. 위쪽 헤드 부분과 mapper 골격 먼저 생성 후 코드 추가 -->
+
+<mapper namespace="userboard">
+
+	<!-- public List<UserBoard> boardList(); -->
+	<select id="boardList" resultType="com.haley.practice.domain.UserBoard">
+		select * from userboard order
+		by no desc
+	</select>
+
+
+	<!-- 1. 게시판 상세보기 구현 -->
+	<!-- 1) public UserBoard getBoard(int no); -->
+	<select id="getBoard" resultType="com.haley.practice.domain.UserBoard"
+		parameterType="java.lang.Integer">
+		select * from userboard
+		where no = #{no}
+	</select>
+
+	<!-- 2) public int updateReadcount(int no); -->
+	<update id="updateReadcount" parameterType="java.lang.Integer">
+		update userboard
+		set
+		readcount = readcount + 1
+		where no = #{no}
+	</update>
+
+	<!-- 2. 게시글 작성 구현 -->
+	<!-- 1) public int maxNo(); -->
+	<select id="maxNo" resultType="java.lang.Integer">
+		select max(no)
+		from userboard
+	</select>
+
+	<!-- 2) public int saveBoard(UserBoard userBoard); -->
+	<insert id="saveBoard" parameterType="com.haley.practice.domain.UserBoard">
+		insert into userboard
+		values(#{no},#{title},#{content},#{writer},sysdate,0)
+	</insert>
+
+	<!-- 3. 게시글 삭제 구현 -->
+	<!-- public int deleteBoard(int no); -->
+	<delete id="deleteBoard" parameterType="java.lang.Integer">
+		delete from userboard
+		where no = #{no}
+	</delete>
+
+
+
+
+
+</mapper>

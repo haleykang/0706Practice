@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 어노테이션을 xml 파일에서 인식 할 수 있도록 해주는 설정 -->
+	<annotation-driven />
+
+	<!--/resources로 시작하는 경로를 만들면 resources 디렉토리에서 찾도록 설정 -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Controller에서 포워딩으로 이동할 경우 return되는 뷰이름과 조합해서 실제 출력할 뷰 파일의 경로 설정 -->
+	<!-- Redirect는 제외 -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<!-- 어노테이션이 붙은 클래스의 객체를 자동으로 생성해줄 패키지 설정 -->
+	<context:component-scan base-package="com.haley.practice" />
+
+	<!-- Controller가 처리하지 못하는 요청은 WAS(Tomcat)이 처리하도록 설정 !! 새로 추가 -->
+	<!-- 요청 처리 주소 패턴이 /*이나 / 일때 꼭 설정 : .js나 .css도 처리하기 위함 -> 
+이런 요청들은 WAS가 처리하도록 하기 위해서 -->
+	<!-- 이 설정이 없으면 404NotFound 에러 발생 -->
+	<default-servlet-handler />
+
+</beans:beans>
